@@ -62,16 +62,43 @@ instances_workstation = [
 $ HOST_BPM_IP=$(terraform output -json instances_workstation | jq -r '.[][0]')
 
 $ ssh bitnami@${HOST_BPM_IP} -i ~/.ssh/tmpkey
-
 ```
 
-3. Get the backend credentials
+You should see this:
+```sh
+...
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+       ___ _ _                   _
+      | _ |_) |_ _ _  __ _ _ __ (_)
+      | _ \ |  _| ' \/ _` | '  \| |
+      |___/_|\__|_|_|\__,_|_|_|_|_|
+  
+  *** Welcome to the ProcessMaker Community packaged by Bitnami 4.1.21-9 ***
+  *** Documentation:  https://docs.bitnami.com/aws/apps/processmaker/    ***
+  ***                 https://docs.bitnami.com/aws/                      ***
+  *** Bitnami Forums: https://community.bitnami.com/                     ***
+bitnami@ip-10-0-10-244:~$ 
+```
 
-???
+3. Get the Application credentials.
 
-4. From AWS Console get the Application credentials 
+Now, you would get the application credentials using the above ssh conexion:
+```sh
+bitnami@ip-10-0-10-244:~$ cat bitnami_credentials 
+Welcome to the ProcessMaker Community packaged by Bitnami
 
-https://docs.bitnami.com/aws/faq/get-started/find-credentials/
+******************************************************************************
+The default username and password is 'user' and 'gml6EM9qiwTV'.
+******************************************************************************
+
+You can also use this password to access the databases and any other component the stack includes.
+
+Please refer to https://docs.bitnami.com/ for more details.
+```
+Other way to get the Application credentials is through the AWS Console. Specificaly, go to `EC2 > Instances > Monitor and troubleshoot > Get system log`.
+Further information here: https://docs.bitnami.com/aws/faq/get-started/find-credentials/
+
 
 
 ## Modeling Business Process

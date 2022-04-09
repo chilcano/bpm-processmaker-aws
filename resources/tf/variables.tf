@@ -32,11 +32,6 @@ variable "remotedesktop_instance_type" {
   description = "Which EC2 instance type to use for the remotedesktop instance."
 }
 
-variable "remotedesktop_spot_price" {
-  default = "0.01"
-  description = "The maximum spot bid for the remotedesktop instance."
-}
-
 variable "ami_name_filter" {
   //default = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"          # Ubuntu
   //default = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"           # Ubuntu
