@@ -1,4 +1,4 @@
-# BPM Processmaker on AWS
+# BPM Processmaker on AWS 
 Deployment and configuration of BPM ProcessMaker 4 on AWS.
 
 ![](imgs/remote-devops-desktop-x2go-client-1-arch-packer.png)
@@ -12,8 +12,19 @@ Deployment and configuration of BPM ProcessMaker 4 on AWS.
 
 ## Steps
 
-1. Install AWS CLI, Terraform CLI, configure your AWS credentials and generate SSH keys. Once completed, run the next commands:
+### Preparing
 
+1. Install AWS CLI, Terraform CLI, configure your AWS credentials and generate SSH keys. 
+
+```sh
+$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh \
+        https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_remove_v3.sh
+
+$ chmod +x devops_tools_*.sh  
+$ . devops_tools_install_v3.sh 
+```
+
+Once completed, run the next commands:
 ```sh
 $ aws configure --profile DS
 
@@ -34,7 +45,26 @@ $ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src
    ssh ubuntu@$(terraform output node_fqdn) -i ~/.ssh/tmpkey
 
 $ chmod -R 400  ~/.ssh/tmpkey*
+```
 
+### Terraform scripts
+
+#### 1. Using Affordable EC2 instance
+
+If you have cloned this repository [https://github.com/chilcano/bpm-processmaker-aws.git](https://github.com/chilcano/bpm-processmaker-aws.git), go to `resources/tf` directory and run the Terraform scripts.
+
+
+
+__ToDo:__
+* Ini vars
+* Remote access
+
+
+#### 2. Using Terraform Modules
+
+1. Clone the [Hands-on-with-TLS](https://github.com/chilcano/Hands-on-with-TLS-Authentication-for-Microservices-Infra.git) repository and go to `02-processmaker/` dir, then run the next commands.
+
+```sh
 $ cd 02-processmaker/
 
 $ terraform init
@@ -58,8 +88,10 @@ instances_workstation = [
 
 2. Get remote access to the AWS Intance created.
 
+Since we are using a Bitnami AMI image with latest Processmaker already configured, we should use the credentials that Bitnami provides us.
+
 ```sh
-$ HOST_BPM_IP=$(terraform output -json instances_workstation | jq -r '.[][0]')
+$ HOST_BPM_IP=$(terraform output -json instances_workstation | jq -r '.[][0]');  echo ${HOST_BPM_IP}
 
 $ ssh bitnami@${HOST_BPM_IP} -i ~/.ssh/tmpkey
 ```
@@ -96,9 +128,18 @@ You can also use this password to access the databases and any other component t
 
 Please refer to https://docs.bitnami.com/ for more details.
 ```
+
 Other way to get the Application credentials is through the AWS Console. Specificaly, go to `EC2 > Instances > Monitor and troubleshoot > Get system log`.
 Further information here: https://docs.bitnami.com/aws/faq/get-started/find-credentials/
 
+4. Accessing to BPM Processmaker Web UI
+
+5. Cleaning up
+
+```sh
+$ terraform destroy
+
+```
 
 
 ## Modeling Business Process

@@ -82,7 +82,8 @@ resource "aws_security_group_rule" "allow_ssh_from_admin" {
   from_port       = 22
   to_port         = 22
   protocol        = "tcp"
-  cidr_blocks     = split(",", var.developer_cidr_blocks)
+  #cidr_blocks     = split(",", var.developer_cidr_blocks)
+  cidr_blocks     = ["0.0.0.0/0"]
   security_group_id = aws_security_group.sec_group.id
 }
 
@@ -195,10 +196,11 @@ resource "aws_iam_instance_profile" "iam_instance_profile" {
 // ======================================================
 
 data "template_file" "pre_install_tpl" {
-  template = file("resources/cloudinit/pre_install_tpl.sh")
+  //template = file("resources/cloudinit/pre_install_tpl.sh")
+  template = file("../cloudinit/pre_install_tpl.sh")
 }
 
-data "template_cloudinit_config" "remotedesktop_userdata_cloudinit" {
+data "template_cloudinit_config" "my_instance_userdata_cloudinit" {
   base64_encode = true
 
   part {
@@ -213,21 +215,22 @@ data "template_cloudinit_config" "remotedesktop_userdata_cloudinit" {
 // EC2 Instances (Remote Environment)
 // ======================================================
 
-data "aws_ami" "latest_ami" {
+data "aws_ami" "ami_bitnami_linux" {
+  most_recent = true
+
   filter {
     name   = "name"
     values = [var.ami_name_filter]
   }
 
-  most_recent = true
   owners      = [var.ami_owner]
 }
 
-resource "aws_instance" "remotedesktop" {
-  ami                     = data.aws_ami.latest_ami.id
-  instance_type           = var.remotedesktop_instance_type
+resource "aws_instance" "my_instance" {
+  ami                     = data.aws_ami.ami_bitnami_linux.id
+  instance_type           = var.remote_instance_type
   subnet_id               = aws_subnet.public_subnet.id
-  user_data_base64        = data.template_cloudinit_config.remotedesktop_userdata_cloudinit.rendered
+  user_data_base64        = data.template_cloudinit_config.my_instance_userdata_cloudinit.rendered
   key_name                = var.ssh_key
   iam_instance_profile    = aws_iam_instance_profile.iam_instance_profile.name
   vpc_security_group_ids  = [aws_security_group.sec_group.id]
