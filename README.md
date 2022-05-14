@@ -24,7 +24,7 @@ $ chmod +x devops_tools_*.sh
 $ . devops_tools_install_v3.sh 
 ```
 
-Once completed, run the next commands:
+Once completed, create an AWS profile and load it:
 ```sh
 $ aws configure --profile DS
 
@@ -47,32 +47,91 @@ $ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src
 $ chmod -R 400  ~/.ssh/tmpkey*
 ```
 
-### Terraform scripts
+### Provisioning ProcessMaker through Terraform on AWS
 
-#### 1. Using Affordable EC2 instance
+#### 1. Using an affordable EC2 instance
 
-If you have cloned this repository [https://github.com/chilcano/bpm-processmaker-aws.git](https://github.com/chilcano/bpm-processmaker-aws.git), go to `resources/tf` directory and run the Terraform scripts.
+1. If you have cloned this repository [https://github.com/chilcano/bpm-processmaker-aws.git](https://github.com/chilcano/bpm-processmaker-aws.git), go to `resources/tf-01` directory and run the Terraform scripts.
+
+```sh
+$ cd resources/tf-01/
+
+$ terraform init
+$ terraform validate
+$ terraform plan
+$ terraform apply
+...
+Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+remote_fqdn = "ec2-35-176-223-222.eu-west-2.compute.amazonaws.com"
+```
+
+2. Get remote access to the AWS Intance created.
+
+```sh
+$ ssh bitnami@$ec2-35-176-223-222.eu-west-2.compute.amazonaws.com -i ~/.ssh/tmpkey
+```
+You will see this:
+```sh
+...
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+       ___ _ _                   _
+      | _ |_) |_ _ _  __ _ _ __ (_)
+      | _ \ |  _| ' \/ _` | '  \| |
+      |___/_|\__|_|_|\__,_|_|_|_|_|
+  
+  *** Welcome to the ProcessMaker Community packaged by Bitnami 4.1.21-9 ***
+  *** Documentation:  https://docs.bitnami.com/aws/apps/processmaker/    ***
+  ***                 https://docs.bitnami.com/aws/                      ***
+  *** Bitnami Forums: https://community.bitnami.com/                     ***
+bitnami@ip-10-0-10-244:~$ 
+```
 
 
+3. Get the initial credentials.
 
-__ToDo:__
-* Ini vars
-* Remote access
+Now, you would get the application credentials using the above ssh conexion:
+```sh
+bitnami@ip-10-0-10-244:~$ cat bitnami_credentials 
+Welcome to the ProcessMaker Community packaged by Bitnami
+
+******************************************************************************
+The default username and password is 'user' and 'gml6EM9qiwTV'.
+******************************************************************************
+
+You can also use this password to access the databases and any other component the stack includes.
+
+Please refer to https://docs.bitnami.com/ for more details.
+```
+
+> Other way to get the Application credentials is through the AWS Console. Specificaly, go to `EC2 > Instances > Monitor and troubleshoot > Get system log`.
+Further information here: https://docs.bitnami.com/aws/faq/get-started/find-credentials/
+
+4. Accessing to BPM ProcessMaker Web UI.
+
+You can open ProcessMaker from AWS Web Console or only open this URL `https://ec2-35-176-223-222.eu-west-2.compute.amazonaws.com`.
+
+
+5. Cleaning up
+
+```sh
+$ terraform destroy
+```
 
 
 #### 2. Using Terraform Modules
 
-1. Clone the [Hands-on-with-TLS](https://github.com/chilcano/Hands-on-with-TLS-Authentication-for-Microservices-Infra.git) repository and go to `02-processmaker/` dir, then run the next commands.
+1. In the same cloned repository go to `resources/tf-02/` dir, then run the next commands.
 
 ```sh
-$ cd 02-processmaker/
+$ cd resources/tf-02/
 
 $ terraform init
-
 $ terraform validate
-
 $ terraform plan
-
 $ terraform apply
 ...
 Apply complete! Resources: 10 added, 0 changed, 0 destroyed.
@@ -91,61 +150,37 @@ instances_workstation = [
 Since we are using a Bitnami AMI image with latest Processmaker already configured, we should use the credentials that Bitnami provides us.
 
 ```sh
-$ HOST_BPM_IP=$(terraform output -json instances_workstation | jq -r '.[][0]');  echo ${HOST_BPM_IP}
+$ HOST_BPM_IP=$(terraform output -json instances_workstation | jq -r '.[][0]'); echo ${HOST_BPM_IP}
 
 $ ssh bitnami@${HOST_BPM_IP} -i ~/.ssh/tmpkey
 ```
 
-You should see this:
-```sh
-...
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-       ___ _ _                   _
-      | _ |_) |_ _ _  __ _ _ __ (_)
-      | _ \ |  _| ' \/ _` | '  \| |
-      |___/_|\__|_|_|\__,_|_|_|_|_|
-  
-  *** Welcome to the ProcessMaker Community packaged by Bitnami 4.1.21-9 ***
-  *** Documentation:  https://docs.bitnami.com/aws/apps/processmaker/    ***
-  ***                 https://docs.bitnami.com/aws/                      ***
-  *** Bitnami Forums: https://community.bitnami.com/                     ***
-bitnami@ip-10-0-10-244:~$ 
-```
+3. Get the initial credentials.
 
-3. Get the Application credentials.
-
-Now, you would get the application credentials using the above ssh conexion:
 ```sh
 bitnami@ip-10-0-10-244:~$ cat bitnami_credentials 
-Welcome to the ProcessMaker Community packaged by Bitnami
-
-******************************************************************************
+...
 The default username and password is 'user' and 'gml6EM9qiwTV'.
-******************************************************************************
-
-You can also use this password to access the databases and any other component the stack includes.
-
-Please refer to https://docs.bitnami.com/ for more details.
+...
 ```
 
-Other way to get the Application credentials is through the AWS Console. Specificaly, go to `EC2 > Instances > Monitor and troubleshoot > Get system log`.
-Further information here: https://docs.bitnami.com/aws/faq/get-started/find-credentials/
+4. Accessing to BPM ProcessMaker Web UI.
 
-4. Accessing to BPM Processmaker Web UI
+You can open ProcessMaker from AWS Web Console or only open this URL `https://${HOST_BPM_IP}`.
+
 
 5. Cleaning up
 
 ```sh
 $ terraform destroy
-
 ```
-
 
 ## Modeling Business Process
 
 1. [Spanish - Modelando el Proceso de Compras con ProcessMaker, 2019/Oct](https://www.youtube.com/watch?v=JHtiRYgj2bY)
 2. [Spanish - Modelando el Proceso de Solicitud de Ausencia, 2020/Oct](https://youtu.be/YLThe2JO5Do?list=PLcekSAwccnFbwfgJ0suNijp-wWQ422hVx&t=777)
+3. [ProcessMaker University - Full and free access to 4 BPM & ProcessMaker courses](https://university.processmaker.com/login/index.php)
+
 
 ## Other BPM tools to review
 
