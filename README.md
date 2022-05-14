@@ -122,7 +122,7 @@ $ terraform destroy
 ```
 
 
-#### 2. Using Terraform Modules
+#### 2. Using Terraform Modules (optional)
 
 1. In the same cloned repository go to `resources/tf-02/` dir, then run the next commands.
 
