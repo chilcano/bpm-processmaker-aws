@@ -180,6 +180,7 @@ $ terraform destroy
 1. [Spanish - Modelando el Proceso de Compras con ProcessMaker, 2019/Oct](https://www.youtube.com/watch?v=JHtiRYgj2bY)
 2. [Spanish - Modelando el Proceso de Solicitud de Ausencia, 2020/Oct](https://youtu.be/YLThe2JO5Do?list=PLcekSAwccnFbwfgJ0suNijp-wWQ422hVx&t=777)
 3. [ProcessMaker University - Full and free access to 4 BPM & ProcessMaker courses](https://university.processmaker.com/login/index.php)
+4. [jBPM, Bonita, Intalio, ProcessMaker, Activiti. Qué BPM Suite uso? / Article I published on 2011/07/21](https://holisticsecurity.wordpress.com/2011/07/21/jbpm-bonita-intalio-processmaker-activiti-que-bpm-suite-uso/)
 
 
 ## Other BPM tools to review
