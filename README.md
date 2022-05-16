@@ -180,7 +180,7 @@ $ terraform destroy
 1. [Spanish - Modelando el Proceso de Compras con ProcessMaker, 2019/Oct](https://www.youtube.com/watch?v=JHtiRYgj2bY)
 2. [Spanish - Modelando el Proceso de Solicitud de Ausencia, 2020/Oct](https://youtu.be/YLThe2JO5Do?list=PLcekSAwccnFbwfgJ0suNijp-wWQ422hVx&t=777)
 3. [ProcessMaker University - Full and free access to 4 BPM & ProcessMaker courses](https://university.processmaker.com/login/index.php)
-4. [jBPM, Bonita, Intalio, ProcessMaker, Activiti. Qué BPM Suite uso? / Article I published on 2011/07/21](https://holisticsecurity.wordpress.com/2011/07/21/jbpm-bonita-intalio-processmaker-activiti-que-bpm-suite-uso/)
+
 
 
 ## Other BPM tools to review
@@ -188,4 +188,5 @@ $ terraform destroy
 1. [BPMN-Moddle](https://github.com/bpmn-io/bpmn-moddle): Read and write BPMN 2.0 diagram files in NodeJS and the browser. BPMN-Moddle uses the BPMN 2.0 meta-model to validate the input and produce correct BPMN 2.0 XML.
 2. [ProcessMaker Nayra](https://github.com/ProcessMaker/nayra): Nayra is a BPMN workflow engine in PHP. Utilize it in your own projects to have your own complex workflow capabilities. 
 3. [ProcessMaker Modeler](https://github.com/ProcessMaker/modeler): Processmaker Modeler is a Vue.js based BPMN modeler scaffolded using [Vue CLI 3](https://cli.vuejs.org/).
+4. [Spanish - jBPM, Bonita, Intalio, ProcessMaker, Activiti. Qué BPM Suite uso? - BPM review I did and published on 2011/07/21](https://holisticsecurity.wordpress.com/2011/07/21/jbpm-bonita-intalio-processmaker-activiti-que-bpm-suite-uso/)
 
