@@ -1,7 +1,7 @@
 # BPM Processmaker on AWS 
 Deployment and configuration of BPM ProcessMaker 4 on AWS.
 
-![](imgs/remote-devops-desktop-x2go-client-1-arch-packer.png)
+![](imgs/bpm-as-a-service-in-5-mins-processmaker-on-aws.png)
 
 ## Resources
 
